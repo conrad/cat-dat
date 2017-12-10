@@ -1,0 +1,23 @@
+{
+  "name": "meow-bot",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "getKitty1": "./node_modules/ethers-meow/bin/meow.js lookup 1",
+    "start": "npm run clean &&./node_modules/typescript/bin/tsc && node ./dist/src/index.js",
+    "clean": "rm -rf dist"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "node-fetch": "^1.7.3",
+    "request": "^2.83.0",
+    "request-promise": "^4.2.2",
+    "typescript": "^2.6.2"
+  },
+  "devDependencies": {
+    "@types/node": "^8.0.57"
+  }
+}
