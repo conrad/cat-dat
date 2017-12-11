@@ -12,7 +12,7 @@ require("../theme/index.css")
 export default class App extends React.Component {
   render() {
     return (
-      <MuiThemeProvider theme={theme}>
+      <MuiThemeProvider>
         <HashRouter>
           <div>
             <Route exact path="/" component={Main} />
