@@ -48,6 +48,7 @@
     "request-promise": "^4.2.2",
     "timebucket": "^0.4.0",
     "typescript": "^2.6.2",
+    "vx": "0.0.1",
     "web3": "^1.0.0-beta.26",
     "webpack": "^3.10.0",
     "webpack-dev-middleware": "^1.12.2",
