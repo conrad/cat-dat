@@ -1,21 +1,43 @@
 var Web3 = require('web3');
 var axios = require('axios');
 var timebucket = require('timebucket');
+var fs = require('fs');
 
 var web3 = new Web3(new Web3.providers.HttpProvider("https://mainnet.infura.io/" + process.env.INFURA_ENDPOINT));
 var contractAddress = "0xb1690C08E213a35Ed9bAb7B318DE14420FB57d8C"
 
-axios.get('http://api.etherscan.io/api?module=contract&action=getabi&address=' + contractAddress).then(function (data) {
-  contractABI = JSON.parse(data.data.result)
-  if (contractABI != ''){
-    var KittyAuctionContract = new web3.eth.Contract(contractABI, contractAddress );
-    var events = KittyAuctionContract.getPastEvents("AuctionSuccessful", {fromBlock: 4711040, toBlock: 4711060}).then(function(sales) {
-      console.log(sales);
-    });
-  }
-});
+var fsCache = 'files/sales.json';
+var salesData = {}
+if (fs.existsSync(fsCache)) {
+  fs.readFile(fsCache, 'utf8', function(err, content) {
+    var sales = JSON.parse(content);
+    salesData = buildSalesData(sales)
+  });
+} else {
+  axios.get('http://api.etherscan.io/api?module=contract&action=getabi&address=' + contractAddress).then(function (data) {
+    contractABI = JSON.parse(data.data.result)
+    if (contractABI != '') {
+      var KittyAuctionContract = new web3.eth.Contract(contractABI, contractAddress);
+      var events = KittyAuctionContract.getPastEvents("AuctionSuccessful", {
+        fromBlock: 4697049,
+        toBlock: 4711060
+      }).then(function (sales) {
+        var json = JSON.stringify(sales);
+        fs.writeFile('files/sales.json', json, 'utf8', function () {});
+      });
+      salesData = buildSalesData(sales)
+    }
+  });
+}
 
-// Refernce code
+function buildSalesData(sales) {
+  var salesData = {};
+  for (var i = 0; i < sales.length; i++) {
+    salesData[sales[i]['returnValues']['tokenId']] = sales[i]['returnValues']
+  }
+}
+
+// Reference code
 
 var searchQuery = "gen:2"
 axios.get("https://api.cryptokitties.co/auctions", {
