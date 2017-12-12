@@ -16,7 +16,7 @@ const AuctionsRepository = {
         fs.appendFileSync(path.join(__dirname, FILEPATH, filename), dataString)
       }
     } catch (err) {
-      console.log(err)
+      console.log('Error writing auctions to file:', err)
       return false
     }
     return true
