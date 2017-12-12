@@ -36,9 +36,7 @@ const API = {
       return response.data.auctions
     })
     .catch(err => {
-      if (err) {
-        console.log(err)
-      }
+      throw err
     })
   }
 }
